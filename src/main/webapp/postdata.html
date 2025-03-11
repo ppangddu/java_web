@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>post</title>
+</head>
+<body>
+<h2>POST 요청 처리</h2>
+<form action="PostDataServlet" method="post"> <!-- a href처럼 못한다. post는 -->
+    이름 : <input type="text" name="name" value="김밥"><br>
+
+    <!-- name이 동일 -->
+    주소1 : <input type="text" name="addr" value="서울시"><br>
+    주소2 : <input type="text" name="addr" value="강남구"><br>
+    <!-- checkbox -->
+    <br>사용 가능한 언어를 모두 선택
+    <input type="checkbox" name="lan" value="C"/>C언어&nbsp;
+    <input type="checkbox" name="lan" value="java"/>C언어&nbsp;
+    <input type="checkbox" name="lan" value="python"/>C언어&nbsp;
+
+    <!-- radio -->
+    <br>현재 사용 중인 운영체제는?
+    <input type="radio" name="os" value="윈도우" checked="checked">윈도우&nbsp;
+    <input type="radio" name="os" value="맥os">맥os<br>
+    <br>
+    <input type="submit" value="자료 전송">
+</form>
+</body>
+</html>
