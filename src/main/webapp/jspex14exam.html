@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+    function loadDbData() {
+        // 버튼 클릭 시 iframe의 src 속성을 변경하여 DB 자료를 불러옵니다.
+        document.getElementById('dbFrame').src = 'jspex14db.jsp?name=' + document.getElementById('name').value;
+    }
+</script>
+</head>
+<body>
+    부서명: <input type="text" name="name" id="name">
+    <button onclick="loadDbData()">확인</button> <!-- 버튼 클릭 시 loadDbData 함수 호출 -->
+    <hr>
+
+    <!-- iframe을 만들어서 버튼 클릭 시 그 안에 내용을 로드 -->
+    <iframe id="dbFrame" name="dbFrame" width="100%" height="500px" style="border:1px solid #000;"></iframe>
+</body>
+</html>
