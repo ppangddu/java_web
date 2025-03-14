@@ -12,7 +12,7 @@ import java.io.PrintWriter;
 /**
  * Servlet implementation class HelloServlet
  */
-@WebServlet("/hello") // 논리적 요청으로 물리적 파일을 찾아감
+@WebServlet(urlPatterns = {"/hello", "/HelloServlet"})
 public class HelloServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
