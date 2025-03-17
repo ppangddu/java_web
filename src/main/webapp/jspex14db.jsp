@@ -19,6 +19,8 @@
             String bName = request.getParameter("name"); // 부서명 파라미터 가져오기
             ArrayList<JikwonDto> list = dbConn.getDataAll(bName); // 부서명으로 필터링된 데이터 가져오기
 
+            out.println(bName);
+            
             int maxPay = Integer.MIN_VALUE; // 최고 연봉을 추적
             int totalEmployees = list.size(); // 총 인원수
 
