@@ -28,7 +28,8 @@ if (dto == null) { // 자바니까 ==
 
 상품 수정<br>
 <form action="jspex16upok.jsp" method="post">
-코드 : <br>
+코드 : <%=dto.getCode() %><br>
+<input type="hidden" name="code" value="<%=dto.getCode() %>">
 품명 : <input type="text" name="sang" value="<%=dto.getSang() %>"><br> <!-- dto가 자바 안에 소스니까 %안에 넣는 거임 -->
 수량 : <input type="text" name="su" value="<%=dto.getSu() %>"><br>
 단가 : <input type="text" name="dan" value="<%=dto.getDan() %>"><br>

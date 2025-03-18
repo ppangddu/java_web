@@ -9,13 +9,13 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-public class DbConnPooling {
+public class DbConnPooling2 {
     private Connection conn;
     private PreparedStatement pstmt;
     private ResultSet rs;
     private DataSource ds;
 
-    public DbConnPooling() {
+    public DbConnPooling2() {
         // DBCP 사용
         try {
             // JNDI : Java Naming end Directory Interface
@@ -23,28 +23,28 @@ public class DbConnPooling {
             Context context = new InitialContext();
             ds = (DataSource) context.lookup("java:comp/env/jdbc_maria");
         } catch (Exception e) {
-            System.out.println("DbConnPooling err" + e);
+            System.out.println("DbConnPooling2 err" + e);
         }
     }
 
-    public ArrayList<SangpumDto> getDataAll() {
-        ArrayList<SangpumDto> list = new ArrayList<SangpumDto>();
+    public ArrayList<GuestDto> getDataAll() {
+        ArrayList<GuestDto> list = new ArrayList<GuestDto>();
         try {
             conn = ds.getConnection();
-            pstmt = conn.prepareStatement("select * from sangdata");
+            pstmt = conn.prepareStatement("select * from guestbook");
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                SangpumDto dto = new SangpumDto();
+            	GuestDto dto = new GuestDto();
                 dto.setCode(rs.getString("code"));
-                dto.setSang(rs.getString("sang"));
-                dto.setSu(rs.getString("su"));
-                dto.setDan(rs.getString("dan"));
+                dto.setWriter(rs.getString("writer"));
+                dto.setTitle(rs.getString("title"));
+                dto.setContents(rs.getString("contents"));
                 list.add(dto);
             }
 
         } catch (Exception e) {
-            System.out.println("DbConnPooling err" + e);
+            System.out.println("DbConnPooling2 err" + e);
         } finally {
             try {
                 if(rs != null) rs.close();
@@ -57,13 +57,13 @@ public class DbConnPooling {
         return list;
     }
     
-    public boolean insertData(SangpumFormBean bean) {
+    public boolean insertData(GuestFormBean bean) {
     	boolean b = false;
     	try {
     		conn = ds.getConnection();
     		
     		//신상 code 구하기
-    		String sql = "select max(code) as max from sangdata";
+    		String sql = "select max(code) as max from guestbook";
     		pstmt = conn.prepareStatement(sql);
     		rs = pstmt.executeQuery();
     		int maxCode = 0;
@@ -73,12 +73,12 @@ public class DbConnPooling {
     		maxCode += 1;
     		
     		// 추가
-    		sql = "insert into sangdata values(?,?,?,?)";
+    		sql = "insert into guestbook values(?,?,?,?)";
     		pstmt = conn.prepareStatement(sql);
     		pstmt.setInt(1, maxCode);
-    		pstmt.setString(2, bean.getSang());
-    		pstmt.setString(3, bean.getSu());
-    		pstmt.setString(4, bean.getDan());
+    		pstmt.setString(2, bean.getWriter());
+    		pstmt.setString(3, bean.getTitle());
+    		pstmt.setString(4, bean.getContents());
     		int result = pstmt.executeUpdate();
     		if (result == 1) {
     			b = true;
@@ -98,10 +98,10 @@ public class DbConnPooling {
     	return b;
     }
     
-    public SangpumDto updateDataRead(String code) {
-    	SangpumDto dto = null;
+    public GuestDto updateDataRead(String code) {
+    	GuestDto dto = null;
     	
-    	String sql = "select * from sangdata where code=?";
+    	String sql = "select * from guestbook where code=?";
     	// try - with - resources
     	try (Connection conn = ds.getConnection();
     		 PreparedStatement pstmt = conn.prepareStatement(sql)
@@ -109,11 +109,11 @@ public class DbConnPooling {
     	     pstmt.setString(1, code); // 첫번째 ? 에다가 code를 준다. String code 받으니까 setString	 
     	     ResultSet rs = pstmt.executeQuery();
     	     if(rs.next()) {
-    	    	 dto = new SangpumDto();
+    	    	 dto = new GuestDto();
     	    	 dto.setCode(rs.getString("code"));
-    	    	 dto.setSang(rs.getString("sang"));
-    	    	 dto.setSu(rs.getString("su"));
-    	    	 dto.setDan(rs.getString("dan"));
+    	    	 dto.setWriter(rs.getString("writer"));
+    	    	 dto.setTitle(rs.getString("title"));
+    	    	 dto.setContents(rs.getString("contents"));
     	     }
 		} catch (Exception e) {
 			System.out.println("updateDataRead err : " + e);
@@ -122,19 +122,19 @@ public class DbConnPooling {
     	return dto;
     }
     
-    public boolean updateData(SangpumFormBean bean) {
+    public boolean updateData(GuestFormBean bean) {
     	boolean b = false;
     	
-    	String sql = "update sangdata set sang=?, su=?, dan=? where code=?";
+    	String sql = "update guestbook set writer=?, title=?, contents=? where code=?";
     	
     	try(
     			Connection conn = ds.getConnection();
     			PreparedStatement pstmt = conn.prepareStatement(sql);
     			
     	   ) {
-    		pstmt.setString(1, bean.getSang()); // db에서 정한 자료형 때문에 setString으로 쓰는 것이 아니다.
-    		pstmt.setString(2, bean.getSu());
-    		pstmt.setString(3, bean.getDan());
+    		pstmt.setString(1, bean.getWriter()); // db에서 정한 자료형 때문에 setString으로 쓰는 것이 아니다.
+    		pstmt.setString(2, bean.getTitle());
+    		pstmt.setString(3, bean.getContents());
     		pstmt.setString(4, bean.getCode());
     		if (pstmt.executeUpdate() > 0) b = true;
     		
@@ -147,7 +147,7 @@ public class DbConnPooling {
     
     public boolean deleteData(String code) {
     	boolean b = false;
-    	String sql = "delete from sangdata where code=?";
+    	String sql = "delete from guestbook where code=?";
     	try(
     			Connection conn = ds.getConnection();
     			PreparedStatement pstmt = conn.prepareStatement(sql);) {

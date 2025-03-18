@@ -5,7 +5,7 @@
 <title>Insert title here</title>
 <script>
     function loadDbData() {
-        // 버튼 클릭 시 iframe의 src 속성을 변경하여 DB 자료를 불러옵니다.
+        // 버튼 클릭 시 iframe의 src 속성을 변경하여 DB 자료를 불러옵니다, 입력 필드의 값을 이용해 동적으로 URL을 설정하는 방식이다.
         document.getElementById('dbFrame').src = 'jspex14db.jsp?name=' + document.getElementById('name').value;
     }
 </script>

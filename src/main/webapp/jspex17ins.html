@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	// alert("aa");
+	$("#btnIns").click(function() {
+		if($("#sang").val() === "") {
+			alert("상품명 입력");
+			return;
+		} else if(isNaN($("#sang").val()) === false) {
+			alert("상품명 문자만 허용!");
+			$("#sang").val("");
+			return;
+		}
+		
+		// 수량, 단가는 생략
+		$("#frm").submit();
+	});
+	
+	$("#btnList").bind("click", listFunc);
+});
+
+function listFunc() {
+	history.back(); // 이전으로 복귀
+	location.href = "jspex17dbcp.jsp"; // 특정 페이지로 이동
+}
+</script>
+</head>
+<body>
+방명록 추가
+<form action="jspex17ins.jsp" method="post" id="frm">
+작성자 : <input type="text" name="writer" id="writer"><br>
+제목 : <input type="text" name="title" id="title"><br>
+내용 : <input type="text" name="contents" id="contents"><br>
+<input type="button" value="방명록추가" id="btnIns">
+<input type="reset" value="입력취소">
+<input type="button" value="돌아가기" id="btnList">
+</form>
+</body>
+</html>
